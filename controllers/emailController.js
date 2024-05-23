@@ -7,29 +7,30 @@ const sendEmail = async (req, res) => {
   const { email:dataEmail, otsikko:dataOtsikko, viesti:dataViesti } = req.body;
   console.log(dataEmail);
 
-  // Create transporter
   const transporter = nodemailer.createTransport({
     service: 'Gmail',
-    host:"465",
+    host:"smtp.gmail.com",
+    posrt:465,
     secure: true,
     auth: {
-      user: process.env.EMAIL,
+      user:process.env.EMAIL,
       pass: process.env.EMAIL_PASS,
     },
+    tls:{
+      rejectUnauthorized:false,
+    }
   });
 
-  // Email options
-  const mailOptions = {
+  const message = {
     from: dataEmail, 
     to: process.env.EMAIL,
     subject: dataOtsikko,
-    text: dataViesti,
+    text: `Message from: ${dataEmail}\n\n${dataViesti}`,
+    replyTo: dataEmail,
   };
 
-  
-  console.log(dataEmail);
   try {
-    await transporter.sendMail(mailOptions);
+     transporter.sendMail(message);
     res.status(200).json({ message: 'Email sent successfully' });
   } catch (error) {
     console.error('Error sending email:', error);
