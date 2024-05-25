@@ -17,11 +17,6 @@ mongoose.connect(MONGODB_URI, {
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'NotFound.js'));
-});
-
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
@@ -35,3 +30,10 @@ app.use(bodyParser.json());
 app.use('/api/auth', require('./routes/registerRoutes'));
 app.use('/api/auth', require('./routes/loginRoutes'))
 app.use('/api/email', emailRoutes);
+
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'NotFound.js'));
+});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
