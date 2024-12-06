@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const blacklistTokenSchema = new mongoose.Schema({
   token: {
@@ -8,7 +9,7 @@ const blacklistTokenSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: '1h', // Tokens will be removed from the DB after 1 hour
+    expires: '1h', 
   },
 });
 
